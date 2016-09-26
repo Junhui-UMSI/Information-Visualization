@@ -30,7 +30,7 @@ li { font-family: 'Open Sans', sans-serif; font-weight: 400; }
 <text x="2" y="140" font-family="Arial" font-size="8pt">BarChart by svg</text>
 
 <!-- step 2.2: your work for here: -->
-<rect x="0" y="0" width="0" height="0" style="fill:rgb(0,0,0)"/></rect>
+<rect x="0" y="250" width="10" height="77.5" style="fill:rgb(0,0,0)"/></rect>
 <text x="0" y="0" font-family="Arial" font-size="8pt">A</text>
 
 </g>
@@ -113,7 +113,14 @@ var colorRange={"min":0, "max":255};
 function findMinMaxRange(data,fieldName){
     var minValue=0
     var maxValue=0
-    // you work here.  Use d3.min or d3.max to complete this question
+    valuelist = [];
+    console.log(data,fieldName)
+    for(i=0;i<data.length;i++){
+      valuelist.push(data[i][fieldName])
+    }
+    minValue = d3.min(valuelist);
+    maxValue = d3.max(valuelist);
+
     return ({"min":minValue,"max":maxValue})
 }
 var overunderRange=findMinMaxRange(salaryData,"overunder")
@@ -128,11 +135,11 @@ document.write("<P>salary range should be 1 to 5: " + salaryRange.min + " to " +
 <TABLE>
 <TR><TH>Name</TH><TH>X</TH><TH>Y</TH><TH>height</TH><TH>color</TH></TR>
 <TR><TD>A</TD><TD>0</TD><TD>---</TD><TD>77.5</TD><TD>(0,0,0)</TD></TR>
-<TR><TD>B</TD><TD>---</TD><TD>---</TD><TD>---</TD><TD>---</TD></TR>
-<TR><TD>C</TD><TD>---</TD><TD>---</TD><TD>---</TD><TD>---</TD></TR>
-<TR><TD>D</TD><TD>---</TD><TD>---</TD><TD>---</TD><TD>---</TD></TR>
+<TR><TD>B</TD><TD>15</TD><TD>---</TD><TD>32.5</TD><TD>(0,0,0)</TD></TR>
+<TR><TD>C</TD><TD>30</TD><TD>---</TD><TD>55</TD><TD>(0,0,255)</TD></TR>
+<TR><TD>D</TD><TD>45</TD><TD>---</TD><TD>10</TD><TD>(0,0,128)</TD></TR>
 <TR><TD>E</TD><TD>60</TD><TD>---</TD><TD>100</TD><TD>(0,0,255)</TD></TR>
-<TR><TD>F</TD><TD>---</TD><TD>---</TD><TD>---</TD><TD>---</TD></TR>
+<TR><TD>F</TD><TD>75</TD><TD>---</TD><TD>100</TD><TD>(0,0,128)</TD></TR>
 </TABLE>
 
 <script>
