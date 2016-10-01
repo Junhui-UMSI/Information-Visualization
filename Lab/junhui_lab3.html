@@ -231,27 +231,39 @@ var bars=barChartD3.selectAll('rect')
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.2 Set up the correct x and y value for each bar.
 bars=bars.append('rect')
-        .attr('x',0)  // modify this line
-        .attr('y',0)  // modify this line
+        .attr('x',function(d,i){
+          return xStartLoc+i*(width+spaceBetweenBar)+width/2
+        })  // modify this line
+        .attr('y',function(d){
+          return yStartLoc-heightScale(d.salary)
+        })  // modify this line
         .attr('height',function(d,i){
             return heightScale(d.salary)
         })
         .attr('width',width);
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.3: change the following line to add color encoding to the chart
-bars.style("fill",colorScale(Math.round(d.overdue)));  // modify this line
+bars.style("fill",function(d){
+  return "rgb(0,0,"+Math.round(colorScale(d.overunder))+")"
+});  // modify this line
 
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.4: add name labels to the bar chart. Use Y=120(y axis location)+10(offset so that names are below the bars)
 nameLabel=barChartD3
-                 .selectAll("text")
+                 .selectAll("text.label")
                  .data(salaryData)
                  .enter()
                  .append("text")
-                 .attr("class","label")
-                 .text('')
-                 .attr("x",0)
-                 .attr("y",0)
+              .attr("class","label")
+              .text(function(d){
+                   return d.name
+                 })
+                 .attr("x",function(d,i){
+                   return xStartLoc+i*(width+spaceBetweenBar)+width/2
+                 })
+                 .attr("y",function(d){
+                   return (120+10)
+                 })
                  .attr("font-family","Arial")
                  .attr("font-size","8pt");
 
