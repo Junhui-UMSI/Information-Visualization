@@ -320,7 +320,7 @@ groups.append("rect")
       })
       .style('fill','red')
       .attr('y',function(d){
-        return 200-heightScalemodify(d.salaryA)
+        return 170-heightScalemodify(d.salaryA)
       });
 groups.append("rect")
       .attr('width',10)
@@ -330,9 +330,9 @@ groups.append("rect")
       .attr('x',function(d,i){
         return xStartLoc+i*(width+spaceBetweenBar+60)+width/2+width
       })
-      .style('fill','yellow')
+      .style('fill','orange')
       .attr('y',function(d){
-        return 200-heightScalemodify(d.salaryB)
+        return 170-heightScalemodify(d.salaryB)
       });
 groups.append("rect")
       .attr('width',10)
@@ -344,8 +344,61 @@ groups.append("rect")
       })
       .style('fill','blue')
       .attr('y',function(d){
-        return 200-heightScalemodify(d.salaryC)
+        return 170-heightScalemodify(d.salaryC)
       });
+
+var nameLabels = salaryCompSVG.selectAll("text.label")
+        .data(salaryData)
+        .enter()
+var labelB = nameLabels.append("text")
+          .attr("class","label")
+          .text("PA")
+          .attr('x',function(d,i){
+            return xStartLoc+i*(width+spaceBetweenBar+60)+width/2
+          })
+          .attr('y',function(d){
+            return 180
+          })
+          .attr("font-family","Arial")
+          .attr("font-size","6pt");
+var labelB = nameLabels.append("text")
+          .attr("class","label")
+          .text("PB")
+          .attr('x',function(d,i){
+            return xStartLoc+i*(width+spaceBetweenBar+60)+width/2+width
+          })
+          .attr('y',function(d){
+            return 180
+          })
+          .attr("font-family","Arial")
+          .attr("font-size","6pt");
+var labelC = nameLabels.append("text")
+          .attr("class","label")
+          .text("PC")
+          .attr('x',function(d,i){
+            return xStartLoc+i*(width+spaceBetweenBar+60)+width/2+width*2
+          })
+          .attr('y',function(d){
+            return 180
+          })
+          .attr("font-family","Arial")
+          .attr("font-size","6pt");
+var salaryCompTitle = salaryCompSVG.selectAll("text.charttitle")
+          .data(salaryData)
+          .enter();
+
+var chartA =salaryCompTitle.append("text")
+          .attr("class","titlename")
+          .text(function(d,i){
+            return "salaryComp of " + d.name
+          })
+          .attr("x",function(d,i){
+            return xStartLoc+i*(width+spaceBetweenBar+60)+width/2
+          })
+          .attr("y",190)
+          .attr("font-family","Arial")
+          .attr("font-size","6pt");
+
 
 </script>
 
