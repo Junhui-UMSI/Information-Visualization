@@ -30,8 +30,18 @@ li { font-family: 'Open Sans', sans-serif; font-weight: 400; }
 <text x="2" y="140" font-family="Arial" font-size="8pt">BarChart by svg</text>
 
 <!-- step 2.2: your work for here: -->
-<rect x="0" y="250" width="10" height="77.5" style="fill:rgb(0,0,0)"/></rect>
-<text x="0" y="0" font-family="Arial" font-size="8pt">A</text>
+<rect x="0" y="22.5" width="10" height="77.5" style="fill:rgb(0,0,0)"/></rect>
+<text x="5" y="120" font-family="Arial" font-size="8pt">A</text>
+<rect x="15" y="67.5" width="10" height="32.5" style="fill:rgb(0,0,0)"/></rect>
+<text x="20" y="120" font-family="Arial" font-size="8pt">B</text>
+<rect x="30" y="45" width="10" height="55" style="fill:rgb(0,0,255)"/></rect>
+<text x="35" y="120" font-family="Arial" font-size="8pt">C</text>
+<rect x="45" y="90" width="10" height="10" style="fill:rgb(0,0,128)"/></rect>
+<text x="50" y="120" font-family="Arial" font-size="8pt">D</text>
+<rect x="60" y="0" width="10" height="100" style="fill:rgb(0,0,255)"/></rect>
+<text x="65" y="120" font-family="Arial" font-size="8pt">E</text>
+<rect x="75" y="0" width="10" height="100" style="fill:rgb(0,0,128)"/></rect>
+<text x="80" y="120" font-family="Arial" font-size="8pt">F</text>
 
 </g>
 </svg>
@@ -134,12 +144,12 @@ document.write("<P>salary range should be 1 to 5: " + salaryRange.min + " to " +
 <P>Calculate what should go in each of the missings cells for step 2.1</P>
 <TABLE>
 <TR><TH>Name</TH><TH>X</TH><TH>Y</TH><TH>height</TH><TH>color</TH></TR>
-<TR><TD>A</TD><TD>0</TD><TD>---</TD><TD>77.5</TD><TD>(0,0,0)</TD></TR>
-<TR><TD>B</TD><TD>15</TD><TD>---</TD><TD>32.5</TD><TD>(0,0,0)</TD></TR>
-<TR><TD>C</TD><TD>30</TD><TD>---</TD><TD>55</TD><TD>(0,0,255)</TD></TR>
-<TR><TD>D</TD><TD>45</TD><TD>---</TD><TD>10</TD><TD>(0,0,128)</TD></TR>
-<TR><TD>E</TD><TD>60</TD><TD>---</TD><TD>100</TD><TD>(0,0,255)</TD></TR>
-<TR><TD>F</TD><TD>75</TD><TD>---</TD><TD>100</TD><TD>(0,0,128)</TD></TR>
+<TR><TD>A</TD><TD>0</TD><TD>22.5</TD><TD>77.5</TD><TD>(0,0,0)</TD></TR>
+<TR><TD>B</TD><TD>15</TD><TD>67.5</TD><TD>32.5</TD><TD>(0,0,0)</TD></TR>
+<TR><TD>C</TD><TD>30</TD><TD>45</TD><TD>55</TD><TD>(0,0,255)</TD></TR>
+<TR><TD>D</TD><TD>45</TD><TD>90</TD><TD>10</TD><TD>(0,0,128)</TD></TR>
+<TR><TD>E</TD><TD>60</TD><TD>0</TD><TD>100</TD><TD>(0,0,255)</TD></TR>
+<TR><TD>F</TD><TD>75</TD><TD>0</TD><TD>100</TD><TD>(0,0,128)</TD></TR>
 </TABLE>
 
 <script>
@@ -190,13 +200,12 @@ var heightScale = d3.scale.linear()
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.1 Complete colorScale such that colorScale will map the overunder value to the color range from 0 to 255.
 var colorScale= d3.scale.linear()
-  .domain([0,0])  // MODIFY HERE
-  .range([0,0]);  // MODIFY HERE
+  .domain([overunderRange.min,overunderRange.max])  // MODIFY HERE
+  .range([0,255]);  // MODIFY HERE
 
 document.write("<p>Question 3.1: testing colorScale(0), we get: " + colorScale(0) + ", should get " + calculateScale(0,{min:-0.5,max:.5},{min:0,max:255}) +"</p>")
 document.write("<p>testing colorscale colorScale(-.5), we get: " + colorScale(-.5) + ", should get " + calculateScale(-0.5,{min:-0.5,max:.5},{min:0,max:255}) +"</p>")
-document.write("<p>testing colorscale colorScale(0.5), we get: " + colorScale(.5) + ", should get " + calculateScale(-0.5,{min:-0.5,max:.5},{min:0,max:255}) +"</p>")
-
+document.write("<p>testing colorscale colorScale(0.5), we get: " + colorScale(.5) + ", should get " + calculateScale(0.5,{min:-0.5,max:.5},{min:0,max:255}) +"</p>")
 
 //setting up svg for the bar chart
 var svg = d3.select('body')
@@ -230,7 +239,7 @@ bars=bars.append('rect')
         .attr('width',width);
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.3: change the following line to add color encoding to the chart
-bars.style("fill",'red');  // modify this line
+bars.style("fill",colorScale(Math.round(d.overdue)));  // modify this line
 
 ///////////////////////////////////////////////////////////////////////////////
 //STEP 3.4: add name labels to the bar chart. Use Y=120(y axis location)+10(offset so that names are below the bars)
@@ -239,6 +248,7 @@ nameLabel=barChartD3
                  .data(salaryData)
                  .enter()
                  .append("text")
+                 .attr("class","label")
                  .text('')
                  .attr("x",0)
                  .attr("y",0)
@@ -255,8 +265,8 @@ var salaryCompRange={min:0, max:3.5 }
 var salaryCompHeightRange={min:0, max:100 }
 //STEP 4.1 update the domain and range of salaryCompHeightScale that maps salaryCompRange to salaryCompHeightRange.
 var salaryCompHeightScale=d3.scale.linear()
-                            .domain([0,0])
-                            .range([0,0]);
+                            .domain([salaryCompRange['min'],salaryCompRange['max']])
+                            .range([salaryCompHeightRange['min'],salaryCompHeightRange['max']]);
 
 document.write("<p>Question 4.1 (should be 100): " + salaryCompHeightScale(3.5) +"</p>")
 
