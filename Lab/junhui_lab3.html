@@ -124,7 +124,6 @@ function findMinMaxRange(data,fieldName){
     var minValue=0
     var maxValue=0
     valuelist = [];
-    console.log(data,fieldName)
     for(i=0;i<data.length;i++){
       valuelist.push(data[i][fieldName])
     }
@@ -269,7 +268,7 @@ nameLabel=barChartD3
 
 
 </script>
-<P>Bonus question, 3.5, my answer is: </P>
+<P>Bonus question, 3.5, my answer is: I think the visualization created by svg and d3 is much more clearer than the one created by the canvas. When inspecting elements, I found that rect tags are written first and then text tags in the d3, while svg create rect and text tag in a combined way. The elements is lines up like one rect then one text. While canvas is written as a whole, i can't see inside the canvas tag.Therefore i think maybe d3 and svg is clearer just because they are treating each drawing piece as a html element that is being written into the page separetely, not being wrapped up like canvas and written together.</P>
 <script>
 ///////////////////////////////////////////////////////////////////////////////
 ////draw salary-composition chart
@@ -292,7 +291,9 @@ document.write("<p>Question 4.1 (should be 100): " + salaryCompHeightScale(3.5) 
 //please refer to the lab handout for more information.
 
 // we started this for you here
-
+var heightScalemodify = d3.scale.linear()
+  .domain([0, 3.5])
+  .range([0, 100]);
 //set up div and svg for salaryComp charts
 var salaryCompDIV = d3.select('body')
                         .append('div')
@@ -306,8 +307,45 @@ var salaryCompSVG=salaryCompDIV.append('svg')        // create an <svg> element
     .append('g')            // create a <g> element
     .attr('class', 'd3Chart') // specify classes
 
-
-
+var groups=salaryCompSVG.selectAll("g")
+    .data(salaryData)
+    .enter()
+groups.append("rect")
+      .attr('width',10)
+      .attr('height',function(d,i){
+        return heightScalemodify(d.salaryA)
+      })
+      .attr('x',function(d,i){
+        return xStartLoc+i*(width+spaceBetweenBar+60)+width/2
+      })
+      .style('fill','red')
+      .attr('y',function(d){
+        return 200-heightScalemodify(d.salaryA)
+      });
+groups.append("rect")
+      .attr('width',10)
+      .attr('height',function(d,i){
+        return heightScalemodify(d.salaryB)
+      })
+      .attr('x',function(d,i){
+        return xStartLoc+i*(width+spaceBetweenBar+60)+width/2+width
+      })
+      .style('fill','yellow')
+      .attr('y',function(d){
+        return 200-heightScalemodify(d.salaryB)
+      });
+groups.append("rect")
+      .attr('width',10)
+      .attr('height',function(d,i){
+        return heightScalemodify(d.salaryC)
+      })
+      .attr('x',function(d,i){
+        return xStartLoc+i*(width+spaceBetweenBar+60)+width/2+width*2
+      })
+      .style('fill','blue')
+      .attr('y',function(d){
+        return 200-heightScalemodify(d.salaryC)
+      });
 
 </script>
 
