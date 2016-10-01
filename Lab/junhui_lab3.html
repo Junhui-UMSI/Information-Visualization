@@ -350,7 +350,7 @@ groups.append("rect")
 var nameLabels = salaryCompSVG.selectAll("text.label")
         .data(salaryData)
         .enter()
-var labelB = nameLabels.append("text")
+var labelA = nameLabels.append("text")
           .attr("class","label")
           .text("PA")
           .attr('x',function(d,i){
