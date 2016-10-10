@@ -294,16 +294,28 @@ var chernoffTitle=chernoffFaceHolder.append('text')
 salaryD=[1,1.4,2,0,2.5,0]
 //step 2.1 complete the following function that updates the data, ranges and scale.
 function updateDataRangeScale(project,projectData){
-    if(projectData.indexOf(project)==-1){//check if we have already added the project or not.
-        
+    if(listOfProjects.indexOf(project) == -1){//check if we have already added the project or not.
+        for(var i=0; i< projectData.length; i++){
+          salaryData[i][project] = projectData[i];
+        }
+        listOfProjects.push(project);
+        calculateTotalSalary(salaryData,listOfProjects);
+        findDeptMean(salaryData);
+        addingOverunder(salaryData);
+        findMinMaxRange(salaryData,"salary")
+        findSalaryCompRange(salaryData,listOfProjects)
+        findMinMaxRange(salaryData,"overunder")
+
         chernoffFaceRadiusScale.domain([salaryCompRange.min,salaryRange.max])
+
     }
 }
+console.log(salaryRange)
 //step 2.1
 document.write("<p>2.1 my answer is "+"yourAnswer"+"</p>")
 
 
-// d3.select("body").transition().duration(600).style("color", "red");
+d3.select("body").transition().duration(600).style("color", "red");
 duration=800
 function updateFaces(){
     chernoffFaceDIV.selectAll("circle."+"salary")
@@ -352,14 +364,14 @@ function addNoses(){
 }
 
 function update(){
-    updateDataRangeScale('salaryD',salaryData)
+    updateDataRangeScale('salaryD',salaryD)
     updateFaces()
     updateLeftEyes()
     updateRightEyes()
     updateMouths()
     addNoses()
 }
-
+console.log(salaryData)
 chernoffButton=chernoffFaceDIV
                 .append("button")
                 .text("update")
@@ -414,7 +426,9 @@ function addSalaryDbars(){
 // var yAxis = d3.svg.axis()
                   // .scale(NaN)//your work here
                   // .orient("left")
-
+// var yAxisScale=d3.scale.linear()
+                //  .domain([salaryCompRange.min,salaryCompRange.max])
+                //  .range([ salaryCompHeightRange.max,salaryCompHeightRange.min])
 // salaryCompG.append('g')
             // .call(yAxis)
             // .attr('transform',function(d,i){
