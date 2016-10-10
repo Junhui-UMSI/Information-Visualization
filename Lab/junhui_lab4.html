@@ -16,12 +16,12 @@ li { font-family: 'Open Sans', sans-serif; font-weight: 400; }
 <body>
 
 <h1>Lab 4-D3(2)</h1>
-<p>User Name:</p> 
-<p>Lab Partner:</p>
+<p>User Name: Junhui</p>
+<p>Lab Partner: Jake</p>
 
 
 <script type="text/javascript">
-var salaryData = 
+var salaryData =
             [{name:"A",dept:"IT",salaryA:1, salaryB:3, salaryC:0},
             {name:"B",dept:"HR",salaryA:1, salaryB:0.5, salaryC:0.5},
             {name:"C",dept:"HR",salaryA:1, salaryB:1, salaryC:1},
@@ -35,8 +35,8 @@ var listOfProjects=["salaryA","salaryB","salaryC"]
 
 function calculateTotalSalary(data,projectsList) {
 //input a data and a list of project
-//calculate the sum salary of all projects in the projectsList, and store it in the data under a field called “salary” 
-  
+//calculate the sum salary of all projects in the projectsList, and store it in the data under a field called “salary”
+
   for (idx in data) {  // for every employee
     employee = data[idx];  // grab the employee
     // calculate their salary as a total of all project
@@ -49,21 +49,19 @@ function calculateTotalSalary(data,projectsList) {
 }
 calculateTotalSalary(salaryData,listOfProjects);
 
-
-  
 function findDeptMean(data){
-    //calculate mean salary of each department 
-//return a dictionary of department means. 
- 
+    //calculate mean salary of each department
+//return a dictionary of department means.
+
     meansByDept={}
-    for (d of data){//find all unique departments 
-        meansByDept[d["dept"]]=undefined //temporarly set to undefined 
+    for (d of data){//find all unique departments
+        meansByDept[d["dept"]]=undefined //temporarly set to undefined
     };
     for (key in meansByDept){
-        //using d3 helper function to get mean 
+        //using d3 helper function to get mean
         meanValue=d3.mean(data,function(d){
         if(d['dept']==key){
-            return d.salary 
+            return d.salary
         }
         })
         meansByDept[key]=meanValue
@@ -113,23 +111,23 @@ var salaryCompRange=findSalaryCompRange(salaryData,listOfProjects)
 //////////// END HELPER FUNCTIONS BASED ON LAST LAB /////////////////////////////
 
 
-/////////////////settings for chart 
+/////////////////settings for chart
 var svgWidth=900
-var svgHeight=200 
+var svgHeight=200
 var subChartWidth=svgWidth/salaryData.length
 
 //////////////////plot bar charts/////////////////////
 //settings for bar chart
-var xStartLoc=30 //the left offset from canvas to the first bar 
+var xStartLoc=30 //the left offset from canvas to the first bar
 var spaceBetweenBar=5
-var yStartLoc=120 // the top offset from canvas to the bottom of the bar. 
-var width=10 //width of bar 
-var xLoc=width+spaceBetweenBar 
+var yStartLoc=120 // the top offset from canvas to the bottom of the bar.
+var width=10 //width of bar
+var xLoc=width+spaceBetweenBar
 var salaryCompHeightRange={min:0, max:100 }
 
 
 var salaryCompHeightScale=d3.scale.linear()
-                            .domain([salaryCompRange.max,salaryCompRange.min])
+                            .domain([salaryCompRange.min,salaryCompRange.max])
                             .range([salaryCompHeightRange.min, salaryCompHeightRange.max]);
 
 var salaryCompDIV = d3.select('body')
@@ -138,7 +136,7 @@ var salaryCompDIV = d3.select('body')
 var salaryCompTitle=salaryCompDIV.append('h3')
                       .text("Salary Composition Bar Charts")
                       .attr("font-family","Open Sans");
-                      
+
 var salaryCompSVG=salaryCompDIV.append('svg')        // create an <svg> element
     .attr('width', svgWidth) // set its dimentions
     .attr('height', svgHeight)
@@ -147,8 +145,8 @@ var salaryCompG=salaryCompSVG.selectAll('rect')
                              .data(salaryData)
                              .enter()
 function plotEachBar(colorOfBar,xStart,fieldName){
-//this function will plot bars for a project, also label the bar. 
-//return pointers to the bars and labels. 
+//this function will plot bars for a project, also label the bar.
+//return pointers to the bars and labels.
     var barForSingleProject=salaryCompG
                         .append('rect')
                         .attr('class',fieldName)
@@ -156,7 +154,7 @@ function plotEachBar(colorOfBar,xStart,fieldName){
                             return xStartLoc+xStart+i*subChartWidth
                         })
                         .attr('y',function(d){
-                            return yStartLoc-salaryCompHeightScale(d[fieldName]) 
+                            return yStartLoc-salaryCompHeightScale(d[fieldName])
                         })
                         .attr('height',function(d){
                             return salaryCompHeightScale(d[fieldName])
@@ -176,7 +174,7 @@ function plotEachBar(colorOfBar,xStart,fieldName){
 colorList=["orange","red","blue"]
 //draws bars for each project by looping through listOfProjects
 for(i in listOfProjects){
-    plotEachBar(colorList[i],i*(width+spaceBetweenBar),listOfProjects[i]) 
+    plotEachBar(colorList[i],i*(width+spaceBetweenBar),listOfProjects[i])
 }
 var salaryCompTitles=salaryCompG.append('text')
                                 .text(function(d){
@@ -186,7 +184,7 @@ var salaryCompTitles=salaryCompG.append('text')
                                 })
                                 .attr('y',yStartLoc+20)
                                 .attr("font-family","Arial")
-                                .attr("font-size","8pt");                   
+                                .attr("font-size","8pt");
 ///////////////////plot chernoff faces////////////
 //set up svg
 var chernoffFaceRadiusRange={min:0, max:60 }
@@ -194,13 +192,13 @@ var chernoffFaceRadiusRange={min:0, max:60 }
 var chernoffFaceRadiusScale=d3.scale.linear()
                             .domain([salaryCompRange.min, salaryRange.max])
                             .range([chernoffFaceRadiusRange.min, chernoffFaceRadiusRange.max]);
-                            
+
 var chernoffFaceDIV = d3.select('body')
                         .append('div')
                         .attr("class","chernoffFaces")
 var chernoffFaceTitle=chernoffFaceDIV.append('h3')
                       .text("Salary Composition Chernoff Faces")
-                      .attr("font-family","Open Sans");       
+                      .attr("font-family","Open Sans");
 var chernoffFaceSVG=chernoffFaceDIV.append('svg')        // create an <svg> element
     .attr('width', svgWidth) // set its dimentions
     .attr('height', svgHeight)
@@ -209,97 +207,99 @@ var chernoffFaceHolder=chernoffFaceSVG.selectAll('circle')
                              .data(salaryData)
                              .enter()
 ///step 1.1: answer the following question
-//faces 
-document.write("<p>1.111 for c1(should be 75, 100, 48): cx="+subChartWidth/2+", cy="+'yourAnswer'+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.112 for c2(should be 225, 100, 24): cx="+'yourAnswer'+", cy="+svgHeight/2+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.113 for all faces(make sure you write your equations as strings): cx:function(d,i){"+'yourAnswer'+"}, cy:function(d,i){"+'yourAnswer'+"}, r:function(d,i){"+'yourAnswer'+"} "+"</p>")
-//right eyes 
-document.write("<p>1.121 for c3(should be 201, 76, 12): cx="+'yourAnswer'+", cy="+'yourAnswer'+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.122 for c4(should be 213, 88, 12): cx="+'yourAnswer'+", cy="+'yourAnswer'+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.123 for all left eyes(make sure you write your equations as strings): cx:function(d,i){"+'yourAnswer'+"}, cy:function(d,i){"+'yourAnswer'+"}, r:function(d,i){"+'yourAnswer'+"} "+"</p>")
+//faces
+document.write("<p>1.111 for c1(should be 75, 100, 48): cx="+subChartWidth/2+", cy="+svgHeight/2+", r=" + chernoffFaceRadiusScale(salaryData[0].salary) + " " + "</p>")
+document.write("<p>1.112 for c2(should be 225, 100, 24): cx="+'yourAnswer'+", cy="+svgHeight/2+", r="+ chernoffFaceRadiusScale(salaryData[1].salary) +" "+"</p>")
+document.write("<p>1.113 for all faces(make sure you write your equations as strings): cx:function(d,i){" + "(subChartWidth / 2 + i*subChartWidth)" + "}, cy:function(d,i){" + "svgHeight / 2" + "}, r:function(d,i){" + "chernoffFaceRadiusScale(d.salary)" + "} "+"</p>")
+//right eyes
+document.write("<p>1.121 for c3(should be 51, 76, 12): cx=" + (subChartWidth/2 - chernoffFaceRadiusScale(salaryData[0].salary)/2) + ", cy=" + (svgHeight / 2 - chernoffFaceRadiusScale(salaryData[0].salary)/2) + ", r=" + chernoffFaceRadiusScale(salaryData[0].salaryA) + " " + "</p>")
+document.write("<p>1.122 for c4(should be 213, 88, 12): cx=" + (subChartWidth + subChartWidth / 2 - chernoffFaceRadiusScale(salaryData[1].salary)/2) + ", cy=" + (svgHeight / 2 - chernoffFaceRadiusScale(salaryData[1].salary)/2) + ", r=" + chernoffFaceRadiusScale(salaryData[1].salaryA) + " " + "</p>")
+document.write("<p>1.123 for all right eyes(make sure you write your equations as strings): cx:function(d,i){" + '(subChartWidth*i + subChartWidth / 2 - chernoffFaceRadiusScale(d.salary)/2)' + "}, cy:function(d,i){" + '(svgHeight / 2 - chernoffFaceRadiusScale(d.salary)/2)' + "}, r:function(d,i){" + 'chernoffFaceRadiusScale(d.salaryA)' + "} " + "</p>")
 //left eyes
-document.write("<p>1.131 for c3(should be 249 76 36): cx="+'yourAnswer'+", cy="+'yourAnswer'+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.132 for c4(should be 237 88 6): cx="+'yourAnswer'+", cy="+'yourAnswer'+", r="+'yourAnswer'+" "+"</p>")
-document.write("<p>1.133 for all right eyes(make sure you write your equations as strings): cx:function(d,i){"+'yourAnswer'+"}, cy:function(d,i){"+'yourAnswer'+"}, r:function(d,i){"+'yourAnswer'+"} "+"</p>")
+document.write("<p>1.131 for c5(should be 99 76 36): cx=" + (subChartWidth/2 + chernoffFaceRadiusScale(salaryData[0].salary)/2) + ", cy=" + (svgHeight / 2 - chernoffFaceRadiusScale(salaryData[0].salary)/2) + ", r=" + chernoffFaceRadiusScale(salaryData[0].salaryB) + " " + "</p>")
+document.write("<p>1.132 for c6(should be 237 88 6): cx=" + (subChartWidth + subChartWidth / 2 + chernoffFaceRadiusScale(salaryData[1].salary)/2) + ", cy=" + (svgHeight / 2 - chernoffFaceRadiusScale(salaryData[1].salary)/2) + ", r=" + chernoffFaceRadiusScale(salaryData[1].salaryB) + " " + "</p>")
+document.write("<p>1.133 for all left eyes(make sure you write your equations as strings): cx:function(d,i){" + '(subChartWidth*i + subChartWidth / 2 + chernoffFaceRadiusScale(d.salary)/2)' + "}, cy:function(d,i){" + '(svgHeight / 2 - chernoffFaceRadiusScale(d.salary)/2)' + "}, r:function(d,i){" + 'chernoffFaceRadiusScale(d.salaryB)' + "} " + "</p>")
 
 //step 1.21 update cx, cy and r value for faces, leftEye and rightEye
  var faces=chernoffFaceHolder.append('circle')
                         .attr("class","salary")
                         .attr('cx',function(d,i){
-                            return 0
-                        })//your work here 
-                        .attr('cy',0)//your work here 
+                            return (subChartWidth / 2 + i*subChartWidth)
+                        })//your work here
+                        .attr('cy',svgHeight / 2)//your work here
                         .attr('r',function(d,i){
-                            return 0
-                        })//your work here 
+                            return chernoffFaceRadiusScale(d.salary)
+                        })//your work here
                         .style('fill',"red")
  var rightEyes=chernoffFaceHolder.append('circle')
                         .attr("class","salaryA")
                         .attr('cx',function(d,i){
-                            
-                            return 0
-                        })//your work here 
+
+                            return (subChartWidth*i + subChartWidth / 2 - chernoffFaceRadiusScale(d.salary)/2)
+                        })//your work here
                         .attr('cy',function(d,i){
-                             return 0
-                        })//your work here 
+                             return (svgHeight / 2 - chernoffFaceRadiusScale(d.salary)/2)
+                        })//your work here
                         .attr('r',function(d,i){
-                            return 0
-                        })//your work here 
+                            return chernoffFaceRadiusScale(d.salaryA)
+                        })//your work here
                         .style('fill',"green")
-                        
+
  var leftEyes=chernoffFaceHolder.append('circle')
                         .attr("class","salaryB")
                         .attr('cx',function(d,i){
-                           return 0
-                        })//your work here 
+                           return (subChartWidth*i + subChartWidth / 2 + chernoffFaceRadiusScale(d.salary)/2)
+                        })//your work here
                         .attr('cy',function(d,i){
-                             return 0
-                        })//your work here 
+                             return (svgHeight / 2 - chernoffFaceRadiusScale(d.salary)/2)
+                        })//your work here
                         .attr('r',function(d,i){
-                             return 0
-                        })//your work here 
+                             return chernoffFaceRadiusScale(d.salaryB)
+                        })//your work here
                         .style('fill',"green")
-                        
+
 //step 1.3, updating attribute "d"
 var mouths=chernoffFaceHolder
                         .append('path')
                         .attr("class","salaryC")
                         .attr('d',function(d,i){
-                            r=0
+                            r=chernoffFaceRadiusScale(d.salary)
                             start="M "
-                            Ay=0
-                            Ax=0
-                            Cy=0
-                            Cx=0
-                            
-                            By=0
-                            Bx=0
-                            
+                            Ay=(svgHeight / 2 + r/2)
+                            Ax=(subChartWidth*i + subChartWidth / 2 - r/2)
+                            Cy=(svgHeight / 2 + r/2)
+                            Cx=(subChartWidth*i + subChartWidth / 2 + r/2)
+
+                            By=(svgHeight / 2 + r/2)+chernoffFaceRadiusScale(d.salaryC)
+                            Bx=(subChartWidth / 2 + i*subChartWidth)
+
                             d=start+Ax+' '+Ay+' Q '+Bx+' '+By+' '+Cx+' '+Cy+' '
                             return d
-                        })//your work here 
+                        })//your work here
                         .style('fill',"orange")
-//step 1.3, add titles for each subchart. 
+//step 1.3, add titles for each subchart.
 var chernoffTitle=chernoffFaceHolder.append('text')
-                                .text('')//your work here
+                                .text(function(d,i){
+                                  return "salaryComp of " + d.name
+                                })//your work here
                                 .attr('x',function(d,i){
-                                       return 0
-                                })//your work here 
-                                .attr('y',0)//your work here 
+                                 return i*subChartWidth
+                                })//your work here
+                                .attr('y',svgHeight-20)//your work here
                                 .attr("font-family","Arial")
                                 .attr("font-size","8pt");
 
 // ////////////////Part2 add data and update chart ///////////////////////
 
 salaryD=[1,1.4,2,0,2.5,0]
-//step 2.1 complete the following function that updates the data, ranges and scale. 
+//step 2.1 complete the following function that updates the data, ranges and scale.
 function updateDataRangeScale(project,projectData){
-    if(projectData.indexOf(project)==-1){//check if we have already added the project or not. 
-        //your work here 
+    if(projectData.indexOf(project)==-1){//check if we have already added the project or not.
+        
         chernoffFaceRadiusScale.domain([salaryCompRange.min,salaryRange.max])
-    } 
-} 
-//step 2.1 
+    }
+}
+//step 2.1
 document.write("<p>2.1 my answer is "+"yourAnswer"+"</p>")
 
 
@@ -315,25 +315,25 @@ function updateFaces(){
 }
 //Step 2.2
 function updateLeftEyes(){
-   //your work here 
+   //your work here
 }
 function updateRightEyes(){
-    //your work here 
+    //your work here
 }
 
 function updateMouths(){
-    //your work here 
+    //your work here
 }
 
-//Step 2.3 add salaryAsNoses 
+//Step 2.3 add salaryAsNoses
 function addNoses(){
     var noses=chernoffFaceHolder
                         .append('ellipse')
                         .attr("class","salaryD")
                         .attr('cx',function(d,i){
                              return 0
-                        })//your work here 
-                        .attr('cy',0)//your work here 
+                        })//your work here
+                        .attr('cy',0)//your work here
                         .attr('rx',function(d){
                              return 0
                         })//set to zero to add animation
@@ -344,10 +344,10 @@ function addNoses(){
         noses.transition()
              .duration(duration)
              .attr('rx',function(d){
-                           return 0//your work here 
+                           return 0//your work here
                         })
              .attr('ry',function(d){
-                            return 0//your work here 
+                            return 0//your work here
                         })
 }
 
@@ -359,7 +359,7 @@ function update(){
     updateMouths()
     addNoses()
 }
-                
+
 chernoffButton=chernoffFaceDIV
                 .append("button")
                 .text("update")
@@ -369,14 +369,14 @@ chernoffButton=chernoffFaceDIV
                 .style("height",50)
                 .style("width",100)
 
-///////////////////Part3 tooltip /////////////////   
+///////////////////Part3 tooltip /////////////////
 // var chernoffTips=chernoffFaceDIV.append("div")
                                 // .attr("class",'tooltip')
                                 // .style("display","none")
                                 // .style('position',"absolute")
                                 // .style("fill","black")
 // function handleMouseOver(d,i){
-    // chernoffTips.style("display","inline")             
+    // chernoffTips.style("display","inline")
 // }
 // function handleMouseMove(d,i){
     // fieldName=d3.select(this).attr('class')
@@ -396,31 +396,31 @@ chernoffButton=chernoffFaceDIV
 // chernoffFaceDIV.selectAll("path")
       // .on("mouseover",handleMouseOver)
       // .on("mouseout",handleMouseOut)
-      // .on("mousemove", handleMouseMove)  
+      // .on("mousemove", handleMouseMove)
 // chernoffFaceDIV.selectAll("ellipse")
               // .on("mouseover", handleMouseOver)
               // .on("mouseout",handleMouseOut)
-              // .on("mousemove", handleMouseMove)  
-              
+              // .on("mousemove", handleMouseMove)
+
  ///////////part 3 end////////////////
  //////part 4////////
- //step 4.1 compelete the following function 
- // Hint if you use the helper function plotEachBar(), this can be done with one line of code 
+ //step 4.1 compelete the following function
+ // Hint if you use the helper function plotEachBar(), this can be done with one line of code
  //Call this function in update()
 function addSalaryDbars(){
-    //your work here 
+    //your work here
 }
-//step 4.2 adding axis  
+//step 4.2 adding axis
 // var yAxis = d3.svg.axis()
                   // .scale(NaN)//your work here
                   // .orient("left")
-                  
+
 // salaryCompG.append('g')
             // .call(yAxis)
             // .attr('transform',function(d,i){
                 // return 'translate('+0+','+0+')'//your work here
             // });
-//step 4.3 adding tooltips for bar charts 
+//step 4.3 adding tooltips for bar charts
 
 //part5 pros and console
 // What do you think the pros and cons of using this kind of representation? Are there datasets that are more or less appropriate for this kind of encoding?  You can answer relative to the bar charts if it helps to be concrete.
