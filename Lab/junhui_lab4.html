@@ -310,7 +310,7 @@ function updateDataRangeScale(project,projectData){
 
     }
 }
-console.log(salaryRange)
+console.log(salaryRange,listOfProjects)
 //step 2.1
 document.write("<p>2.1 my answer is "+"yourAnswer"+"</p>")
 
@@ -327,14 +327,53 @@ function updateFaces(){
 }
 //Step 2.2
 function updateLeftEyes(){
-   //your work here
+  chernoffFaceDIV.selectAll("circle." + "salaryB")
+    .transition()
+    .duration(duration)
+    .attr('cx', function(d, i) {
+      return (subChartWidth * i + subChartWidth / 2 + chernoffFaceRadiusScale(d.salary) / 2)
+    })
+    .attr('cy', function(d, i) {
+      return (svgHeight / 2 - chernoffFaceRadiusScale(d.salary) / 2)
+    })
+    .attr('r', function(d, i) {
+      return chernoffFaceRadiusScale(d.salaryB)
+    })
 }
+
 function updateRightEyes(){
-    //your work here
+  chernoffFaceDIV.selectAll("circle." + "salaryA")
+    .transition()
+    .duration(duration)
+    .attr('cx', function(d, i) {
+      return (subChartWidth * i + subChartWidth / 2 - chernoffFaceRadiusScale(d.salary) / 2)
+    })
+    .attr('cy', function(d, i) {
+      return (svgHeight / 2 - chernoffFaceRadiusScale(d.salary) / 2)
+    })
+    .attr('r', function(d, i) {
+      return chernoffFaceRadiusScale(d.salaryA)
+    })
 }
 
 function updateMouths(){
-    //your work here
+  chernoffFaceDIV.selectAll("path." + "salaryC")
+    .transition()
+    .duration(duration)
+    .attr('d', function(d, i) {
+      r = chernoffFaceRadiusScale(d.salary)
+      start = "M "
+      Ay = (svgHeight / 2 + r / 2)
+      Ax = (subChartWidth * i + subChartWidth / 2 - r / 2)
+      Cy = (svgHeight / 2 + r / 2)
+      Cx = (subChartWidth * i + subChartWidth / 2 + r / 2)
+
+      By = (svgHeight / 2 + r / 2) + chernoffFaceRadiusScale(d.salaryC)
+      Bx = (subChartWidth / 2 + i * subChartWidth)
+
+      d = start + Ax + ' ' + Ay + ' Q ' + Bx + ' ' + By + ' ' + Cx + ' ' + Cy + ' '
+      return d
+    })
 }
 
 //Step 2.3 add salaryAsNoses
@@ -343,9 +382,9 @@ function addNoses(){
                         .append('ellipse')
                         .attr("class","salaryD")
                         .attr('cx',function(d,i){
-                             return 0
+                             return (subChartWidth / 2 + i * subChartWidth)
                         })//your work here
-                        .attr('cy',0)//your work here
+                        .attr('cy',svgHeight / 2)//your work here
                         .attr('rx',function(d){
                              return 0
                         })//set to zero to add animation
@@ -356,10 +395,10 @@ function addNoses(){
         noses.transition()
              .duration(duration)
              .attr('rx',function(d){
-                           return 0//your work here
+                           return chernoffFaceRadiusScale(d.salaryD)
                         })
              .attr('ry',function(d){
-                            return 0//your work here
+                            return chernoffFaceRadiusScale(d.salaryD)/2
                         })
 }
 
@@ -370,6 +409,7 @@ function update(){
     updateRightEyes()
     updateMouths()
     addNoses()
+    addSalaryDbars()
 }
 console.log(salaryData)
 chernoffButton=chernoffFaceDIV
@@ -382,37 +422,37 @@ chernoffButton=chernoffFaceDIV
                 .style("width",100)
 
 ///////////////////Part3 tooltip /////////////////
-// var chernoffTips=chernoffFaceDIV.append("div")
-                                // .attr("class",'tooltip')
-                                // .style("display","none")
-                                // .style('position',"absolute")
-                                // .style("fill","black")
-// function handleMouseOver(d,i){
-    // chernoffTips.style("display","inline")
-// }
-// function handleMouseMove(d,i){
-    // fieldName=d3.select(this).attr('class')
-    // chernoffTips.text(d.name+" "+fieldName+": "+d[fieldName])
-      // .style("left", (d3.event.pageX - 34) + "px")
-      // .style("top", (d3.event.pageY - 12) + "px")
-      // .style("color","black");
-// }
-// function handleMouseOut(d,i){
-     // chernoffTips.style("display", "none");
-// }
+var chernoffTips=chernoffFaceDIV.append("div")
+                                .attr("class",'tooltip')
+                                .style("display","none")
+                                .style('position',"absolute")
+                                .style("fill","black")
+function handleMouseOver(d,i){
+    chernoffTips.style("display","inline")
+}
+function handleMouseMove(d,i){
+    fieldName=d3.select(this).attr('class')
+    chernoffTips.text(d.name+" "+fieldName+": "+d[fieldName])
+      .style("left", (d3.event.pageX - 34) + "px")
+      .style("top", (d3.event.pageY - 12) + "px")
+      .style("color","black");
+}
+function handleMouseOut(d,i){
+     chernoffTips.style("display", "none");
+}
+chernoffFaceDIV.selectAll("circle")
+      .on("mouseover", handleMouseOver)
+      .on("mouseout",handleMouseOut)
+      .on("mousemove", handleMouseMove)
+chernoffFaceDIV.selectAll("path")
+      .on("mouseover",handleMouseOver)
+      .on("mouseout",handleMouseOut)
+      .on("mousemove", handleMouseMove)
+chernoffFaceDIV.selectAll("ellipse")
+              .on("mouseover", handleMouseOver)
+              .on("mouseout",handleMouseOut)
+              .on("mousemove", handleMouseMove)
 
-// chernoffFaceDIV.selectAll("circle")
-      // .on("mouseover", handleMouseOver)
-      // .on("mouseout",handleMouseOut)
-      // .on("mousemove", handleMouseMove)
-// chernoffFaceDIV.selectAll("path")
-      // .on("mouseover",handleMouseOver)
-      // .on("mouseout",handleMouseOut)
-      // .on("mousemove", handleMouseMove)
-// chernoffFaceDIV.selectAll("ellipse")
-              // .on("mouseover", handleMouseOver)
-              // .on("mouseout",handleMouseOut)
-              // .on("mousemove", handleMouseMove)
 
  ///////////part 3 end////////////////
  //////part 4////////
@@ -420,20 +460,32 @@ chernoffButton=chernoffFaceDIV
  // Hint if you use the helper function plotEachBar(), this can be done with one line of code
  //Call this function in update()
 function addSalaryDbars(){
-    //your work here
+  plotEachBar("green", xStartLoc + 3 * (width + spaceBetweenBar), "PD")
+  chernoffFaceDIV.selectAll("circle")
+        .on("mouseover", handleMouseOver)
+        .on("mouseout",handleMouseOut)
+        .on("mousemove", handleMouseMove)
+  chernoffFaceDIV.selectAll("path")
+        .on("mouseover",handleMouseOver)
+        .on("mouseout",handleMouseOut)
+        .on("mousemove", handleMouseMove)
+  chernoffFaceDIV.selectAll("ellipse")
+                .on("mouseover", handleMouseOver)
+                .on("mouseout",handleMouseOut)
+                .on("mousemove", handleMouseMove)
 }
 //step 4.2 adding axis
-// var yAxis = d3.svg.axis()
-                  // .scale(NaN)//your work here
-                  // .orient("left")
-// var yAxisScale=d3.scale.linear()
-                //  .domain([salaryCompRange.min,salaryCompRange.max])
-                //  .range([ salaryCompHeightRange.max,salaryCompHeightRange.min])
-// salaryCompG.append('g')
-            // .call(yAxis)
-            // .attr('transform',function(d,i){
-                // return 'translate('+0+','+0+')'//your work here
-            // });
+var yAxis = d3.svg.axis()
+                  .scale(NaN)//your work here
+                  .orient("left")
+var yAxisScale=d3.scale.linear()
+                 .domain([salaryCompRange.min,salaryCompRange.max])
+                 .range([ salaryCompHeightRange.max,salaryCompHeightRange.min])
+salaryCompG.append('g')
+            .call(yAxis)
+            .attr('transform',function(d,i){
+                return 'translate(- 10 ,0)'
+            });
 //step 4.3 adding tooltips for bar charts
 
 //part5 pros and console
