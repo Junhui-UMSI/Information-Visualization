@@ -16,8 +16,8 @@
 <body>
 
 <h1>Lab 5-D3(3)</h1>
-<p>User Name:</p> 
-<p>Lab Partner:</p>
+<p>User Name: Junhui Li</p>
+<p>Lab Partner:Jake</p>
 
 <script type="text/javascript">
 /////////////////settings for chart ////
@@ -37,7 +37,7 @@ var salaryCompRange={}
 
 var projectList=["salaryA","salaryB","salaryC","salaryD"]
 
-//Step 0.3 load the data and call the function ready 
+//Step 0.3 load the data and call the function ready
 queue()
     .defer(d3.json, "salaryData.json")
     .defer(d3.json, "us.json")
@@ -46,14 +46,14 @@ queue()
 
 
 function ready(error, sd,u){
-    // this function is called after all datasets are loaded. 
+    // this function is called after all datasets are loaded.
     salaryData=sd
     us=u
-    //Step 0.4 update the data 
+    //Step 0.4 update the data
     updateDataAndRange(salaryData,projectList)
-    
-    //Part 1 draw pie chart 
-    //set up svg for pie charts 
+
+    //Part 1 draw pie chart
+    //set up svg for pie charts
     var pieSvg = d3.select("body")
                     .append("svg")
                     .attr("class","pie")
@@ -62,8 +62,8 @@ function ready(error, sd,u){
                     .style("top",padding+"px")
                     .style("left",padding+"px");
 
-    //Part1 draw pie chart and store 
-    //Edit in pie.js    
+    //Part1 draw pie chart and store
+    //Edit in pie.js
     var colorScale=drawPie(salaryData,projectList,pieSvg)
 
     //Part 2 draw map
@@ -74,20 +74,20 @@ function ready(error, sd,u){
         .attr("width", svgWidth)
         .attr("height", svgHeight);
     symbols=drawMap(us,salaryData,mapSvg)
-    
-    //Part 3 Add interactivities 
+
+    //Part 3 Add interactivities
     addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale)
 }
 
 //part 3 add interaction
 function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
-    //settings for for text. 
+    //settings for for text.
     var textX=svgWidth-padding
     var textY=svgHeight*0.2
     var fontSize=20
     var mapInfo = mapSvg.append('g')
                                 .attr("class","information")
-    //Initiate 3 variables for each line. 
+    //Initiate 3 variables for each line.
     var line1=mapInfo.append("text")
                                 .text('Employee Data:')
                                 .style('text-anchor',"end")
@@ -111,12 +111,12 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
                                 .style('text-anchor',"end")
                                 .style('fill',"blue")
                                 .style("font-size",fontSize+"px")
-                                
+
     mapSvg.selectAll('.symbol')
                   .on("mouseover", handleMouseOver)
                   .on("mouseout",handleMouseOut)
-    
-    //STEP 3.1 AND 3.2 
+
+    //STEP 3.1 AND 3.2
     function handleMouseOver(d,i){
         stateName='YOURANSWER'//your work here
         totalSalary='YOURANSWER'//your work here
@@ -129,11 +129,11 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
                 employeeNames+="and "
             }
             //STEP 3.2 your work here
-            
+
         }
         employeeInfo.text(employeeNames+"work(s) in "+stateName)
                     .style('display','inline')
-        
+
         salaryInfo.text("Their total salary is: "+totalSalary)
                   .style('display','inline')
     }
