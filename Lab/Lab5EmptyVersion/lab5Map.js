@@ -6,12 +6,12 @@ function drawMap(us,salaryData,mapSvg){
     var states=mapSvg.append('g')
        .attr("class", "states")
        .append("path")
-      .datum(topojson.feature(us, us.objects.states))//use datum because we want a single path instead of multiple paths. 
-      .attr("d", path); 
-      
+      .datum(topojson.feature(us, us.objects.states))//use datum because we want a single path instead of multiple paths.
+      .attr("d", path);
+
    //STEP 2.2 organize the dataset for map drawing
   stateSalary=createDataForEachState(salaryData,stateCoordinates)
-  
+  console.log(stateSalary);
 
   totalSalaryRange=findTotalSalaryRange(stateSalary.features)
   dotRadiusRange={min:10,max:40}
@@ -19,31 +19,30 @@ function drawMap(us,salaryData,mapSvg){
   dotColorScale=d3.scale.linear()
                 .domain([totalSalaryRange.min,totalSalaryRange.average,totalSalaryRange.max])
                 .range(["red","white","green"])
-  //STEP 2.3 
+  //STEP 2.3
   dotRadiusScale=d3.scale.linear()
-                .domain([0,0])//your work here 
-                .range([0,0])//your work here 
-  //STEP 2.4 and STEP 2.5           
+                .domain([totalSalaryRange.min,totalSalaryRange.max])//your work here
+                .range([dotRadiusRange.min,dotRadiusRange.max])//your work here
+  //STEP 2.4 and STEP 2.5
   symbols=mapSvg.append('g')
                 .selectAll(".symbol")
                 .data(stateSalary.features)
                 .enter()
                 .append("path")
                 .attr("class", "symbol")
-                .attr("d", path.pointRadius(function(d) { 
+                .attr("d", path.pointRadius(function(d) {
                     totalS=d.properties.totalSalary
                     //step 2.5
                     // your work here (update the next line)
-                    return dotRadiusScale(totalS) 
+                    return dotRadiusScale(totalS/d.properties.employees.length)
                   }))
                 .style("fill",function(d,i){
                     totalS=d.properties.totalSalary
                     //step 2.5
                     // your work here (update the next line)
-                    return dotColorScale(totalS)
+                    return dotColorScale(totalS/d.properties.employees.length)
                   })
 
-          
+
     return symbols
 }
-

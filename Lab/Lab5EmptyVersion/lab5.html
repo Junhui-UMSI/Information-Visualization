@@ -118,8 +118,8 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
 
     //STEP 3.1 AND 3.2
     function handleMouseOver(d,i){
-        stateName='YOURANSWER'//your work here
-        totalSalary='YOURANSWER'//your work here
+        stateName=d.properties.name//your work here
+        totalSalary=d.properties.totalSalary//your work here
         employees=d.properties.employees
         employeeNames=""
         for (idx in employees){
@@ -129,6 +129,7 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
                 employeeNames+="and "
             }
             //STEP 3.2 your work here
+            d3.select('')
 
         }
         employeeInfo.text(employeeNames+"work(s) in "+stateName)
