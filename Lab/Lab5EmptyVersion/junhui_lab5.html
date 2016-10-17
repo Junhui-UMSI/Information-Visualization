@@ -117,6 +117,7 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
                   .on("mouseout",handleMouseOut)
 
     //STEP 3.1 AND 3.2
+    var colorScale=d3.scale.category20();
     function handleMouseOver(d,i){
         stateName=d.properties.name//your work here
         totalSalary=d.properties.totalSalary//your work here
@@ -128,8 +129,13 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
             if(idx!=employees.length-1){
                 employeeNames+="and "
             }
+            colorScale();
             //STEP 3.2 your work here
-            d3.select('')
+            var element = d3.select(".pie"+employees[idx])
+                            .selectAll('.arc')
+                            .each(function(d,i){
+                                d3.select(this).transition().style('fill',colorScale(-i-1));
+                            })
 
         }
         employeeInfo.text(employeeNames+"work(s) in "+stateName)
@@ -142,9 +148,18 @@ function addInteractivity(mapSvg,symbols,salaryData,pieSvg,colorScale){
     function handleMouseOut(d,i){
         employeeInfo.style('display','none')
         salaryInfo.style('display','none')
-
+        employees=d.properties.employees
         //STEP 3.2 your work here
+        for (idx in employees){
+        colorlist = ['rgb(31, 119, 180)', 'rgb(174, 199, 232)','rgb(255, 127, 14)','rgb(255, 187, 120)']
+
+        var element = d3.select(".pie"+employees[idx])
+                        .selectAll('.arc')
+                        .each(function(d,i){
+                            d3.select(this).transition().style('fill',colorlist[i]);
+                        })
     }
+}
 }
 </script>
 
